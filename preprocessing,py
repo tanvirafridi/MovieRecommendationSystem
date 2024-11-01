@@ -1,0 +1,35 @@
+import numpy as np
+import pandas as pd
+import difflib
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_similarity
+
+
+# loading the data from csv file to pandas daraframe
+movies_data = pd.read_csv('/content/movies (1).csv')
+
+#Demo data from the dataset
+movies_data.head()
+
+# total number of data
+movies_data.shape
+
+# Features selection
+selected_features = ['genres','keywords','tagline','cast','director']
+print(selected_features)
+
+#Replacing the missing values with null string
+for feature in selected_features:
+  movies_data[feature] = movies_data[feature].fillna('')
+
+# Grouping all five slected features
+combine_feature = movies_data['genres']+' '+movies_data['keywords']+' '+movies_data['tagline']+' '+movies_data['cast']+' '+movies_data['director']
+
+print(combine_feature)
+
+#Converting text data to numerical values
+vectorizer = TfidfVectorizer()
+
+feature_vectors = vectorizer.fit_transform(combine_feature)
+
+print(feature_vectors)
